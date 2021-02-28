@@ -1,0 +1,46 @@
+---
+title: "Teste R, Lendo a Postgres DB"
+output: html_document
+---
+
+# Installing the deps
+
+```{r}
+#install.packages('RPostgreSQL')
+```
+
+# Making the connection
+
+```{r}
+library(DBI)
+library(RPostgreSQL)
+
+drv <- dbDriver('PostgreSQL')
+
+db <- 'teste_p_dev' 
+
+host_db <- 'localhost'
+
+db_port <- '5432' 
+
+db_user <- 'postgres'
+
+db_password <- 'postgres'
+
+con <- dbConnect(drv, dbname = db, host=host_db, port=db_port, user=db_user, password=db_password)  
+```
+
+```{r}
+accounts_table <- dbGetQuery(con, 'SELECT * FROM accounts') 
+```
+# Making a graphic with the datas of the db
+
+```{r}
+hist(accounts_table$balance,
+       main = "Histogram of accounts",
+       xlab = "Balance",
+       ylab = "",
+     
+       ylim = c(0, 2),
+       col = "purple")
+```
